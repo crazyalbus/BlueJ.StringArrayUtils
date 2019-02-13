@@ -1,4 +1,5 @@
          import java.util.Arrays;
+         import java.util.ArrayList;
 
 /**
  * Created by leon on 1/29/18.
@@ -73,8 +74,6 @@ public class StringArrayUtils {
      * @return true if the order of the array is the same backwards and forwards
      */ // TODO
     public static boolean isPalindromic(String[] array) {
-
-        
         String[] reversedArray = new String[array.length];
         
         for (int i=0; i<array.length; i++)
@@ -90,11 +89,8 @@ public class StringArrayUtils {
      * @return true if each letter in the alphabet has been used in the array
      */ // TODO
     public static boolean isPangramic(String[] array) {
+        ArrayList countAlphabet= new ArrayList();
 
-        int nextPosition = 0;
-        char[] tracker = new char[26];
-        int trackerCount = 0;
-        
         //merge string array into one string & convert to lower case
         String merged = "";
         
@@ -103,23 +99,18 @@ public class StringArrayUtils {
         }
         
         merged = merged.toLowerCase();
+        //loop through new string to check if in countAlpha
+        int i = 0;
         
-        // run through string and add new char to tracker array
-        for (int i=0; i<merged.length(); i++) {
-            if (Arrays.binarySearch(tracker, merged.charAt(i)) < 0) {
-                tracker[i] = merged.charAt(i);
-                Arrays.sort(tracker);
-                nextPosition ++;
+        while (i <merged.length()) {
+            if (!countAlphabet.contains(merged.charAt(i)) && (merged.charAt(i) != ' ')) {
+                countAlphabet.add(merged.charAt(i));
+                
             }
+            i++;
         }
         
-        for (int i=0; i<26; i++) {
-            if (tracker[i] != '\u0000') {
-                trackerCount ++;
-            }
-
-        }
-        return trackerCount == 26;
+        return countAlphabet.size() == 26;
     }
 
 
@@ -207,40 +198,26 @@ public class StringArrayUtils {
      * @return array of Strings with each consecutive duplicate occurrence concatenated as a single string in an array of Strings
      */ // TODO
     public static String[] packConsecutiveDuplicates(String[] array) {
-        int charDups = 0;
-        int newArraySize = 0;
+        ArrayList<String> newArray = new ArrayList<String>();
         int i = 0;
-        int j = 0;
-        while (i < array.length-1) {
-            j = i;
-            while (array[j].equals(array[j+1])) {
-                charDups ++;
+        while (i<array.length-1) {
+            String newString = array[i];
+            int j = i;
+            while ((array[j].equals(array[j+1]))) {
+                newString = newString + array[j+1];
                 j++;
+                if (j >= array.length - 1) {
+                    break;
+                }
             }
-            newArraySize ++;
+            newArray.add(newString);
             i = j + 1;
-        }
-        
-        if (
-        
-        
-        String[] newArray = new String[newArraySize];
-        
-        //loop to create new array
-        int tracker = 0;
-        for (int k=0; k<array.length-1; k++) {
-            String newString = "";
-            int p = k;
-            while (array[p].equals(array[p+1])) {
-                newString = newString + array[k];
-                p++;
-            }
-        newArray[tracker] = newString;
-        tracker ++;
     }
-        
-        
-        return newArray;
+    
+        if (!array[array.length-1].equals(array[array.length - 2])) {
+            newArray.add(array[array.length-1]);
+        }
+    return newArray.toArray(new String[newArray.size()]);
     }
 
 
